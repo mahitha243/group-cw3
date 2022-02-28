@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue week 8 Individual Coursework</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!--CSS-->
+    <link rel="stylesheet"  type="text/css" href="css/main.css">
+    <!--FONTAWESOME-->
+    <script src="https://kit.fontawesome.com/7080cd0a09.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7080cd0a09.js" crossorigin="anonymous"></script>
+    <!---VUE-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <!--LESSON DETAILS-->
+    <script src="lessons.js" ></script>
+    <link rel="manifest" href="afterSchoolapp.webmanifest">
+</head>
+<body>
+    <!--website name on top the page by linking it to sitename-->
+    <div id="app" class="container" style="margin-top: 10%;">
+    <div class="container-fluid nav_view p-4">
+        <h3 class="text-center">
+            {{sitename}}
+        </h3>
+       </div>
+<a style="float: right;" href="#" class="btn btn-primary" v-if='cartItemCount === "" '  hidden>Cart</a>
+    <a style="float: right;" href="#" class="btn btn-primary" @click="showCheckout()" v-else > <span class="fas fa-cart-plus"></span> Cart ({{cartItemCount}})</a>
+    <!--search bar html-->
+    <div class="col-md-6">
+        <form>
+            <input class="search_form form-control"  type="text" v-model="term" v-on:keyup="searchLessons" placeholder="Search Courses" >
+           </form>
+      </div>
+      </header>
+    <div v-if='showProd'>
+   <br><br><br>
+   <!--Start of sort by and sort order-->
+<aside>
+  <h4>SortBy</h4>
+  <!--Title-->
+  <div class="custom-sort" display="inline-block" >
+  <input type="radio" id="title"  v-model="sort.sortingMethod" value="title" class="custom-sort-input">
+  <label   class="custom-sort-label" for="title" >Title</label><br>
+  </div>
+  <!--location-->
+  <div class="custom-sort" display="inline-block">
+  <input type="radio" id="location"  v-model="sort.sortingMethod" value="location" class="custom-sort-input">
+  <label class="custom-sort-label" for="location">Location</label><br>
+  </div>
+  <!--price-->
+  <div class="custom-sort" display="inline-block">
+  <input type="radio" id="price"  v-model="sort.sortingMethod" value="price" class="custom-sort-input">
+  <label class="custom-sort-label" for="price">Price</label><br>
+  </div>
+  <!--Available space-->
+  <div class="custom-sort" display="inline-block">
+  <input type="radio" id="availability"  v-model="sort.sortingMethod" value="availablespace" class="custom-sort-input">
+  <label class="custom-sort-label" for="price">Availability</label>
+  <br>  
+  </div>
+</aside>
+<aside1>
+  <h5>SortOrder</h5>
+  <div class="sort">
+  <input type="radio" id="ascending" name="sort_order" v-model="sort.sortingOrder" value="ascending">
+  <label class="sort-label" for="ascending">Ascending</label><br>
+  </div>
+  <div class="sort">
+  <input type="radio" id="descending" name="sort_order" v-model="sort.sortingOrder" value="descending">
+  <label class="sort-label" for="descending">Descending</label><br>  
+  </div>
+</aside1>
+<!--end of sort by  and sort order html-->
+
+<!--subject display vue -->
+        <div class="row" >
+            <div  v-for="lessons in sortedLessons" class="col-md-6 col-lg-4 mb-5">
+            <div class="card " style="width: 18rem;border-bottom-width: 5px; border-bottom-color:#cc01aa;">
+                <img height="200" v-bind:src="lessons.image">
+                <div class="card-body">
+                <h5 class="card-title" >Title : {{lessons.title}}</h5>
+                <p class="card-text" > Location : {{lessons.location}} </p>
+                <p> <b>Price : ${{lessons.price}}</b></p>
+                <p class="text-danger" v-if="lessons.availablespace === cartCount(lessons) "> Completely Booked</p>
+                <p class="text-success" v-else>Available Spaces : {{lessons.availablespace - cartCount(lessons)}}</p>
+                <button style="float: right;" href="#" class="btn btn-primary" v-on:click ='addToCart(lessons)' v-if='canAddToCart(lessons)' >Add To Cart</button>
+                <button hidden style="float: right;" href="#" class="btn btn-primary" v-else >Add To Cart</button>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--cart page-->
+ <div v-else>
+       <a style="float: left;" href="#" class="btn btn-primary" @click="showCheckout()"  > < Back </a> 
+        <h1 class="text-center" v-text="sitename2" style="margin-bottom: 5%;"></h1>
+        
+    
+    <br><br><br>
+
+        <div class="row" >
+            <!--showing subject details in shopping cart page once the user adds it in cart -->
+            <div  v-for="lessons in cart" class="col-md-4 mb-5">
+            <div class="card " style="width: 18rem;border-bottom-width: 5px; border-bottom-color:#bb01cc;">
+                <img height="200" v-bind:src="lessons.image">
+                <div class="card-body">
+                <h5 class="card-title" >Title : {{lessons.title}}</h5>
+                <p class="card-text" > Location : {{lessons.location}} </p>
+                <p> <b>Price : ${{lessons.price}}</b></p>
+                <button style="float: right;" href="#" class="btn btn-primary" v-on:click ='deleteFromCart(lessons, cart)' >Remove from Cart</button>
+                
+                    <br>
+                <div>
+                    
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+        <!--checkout form in shopping cart page-->
+        <h2>Checkout</h2>
+        <br>
+        <form>
+            <input class="form-control" style="width: 60%;" type="text" v-model="user.name" placeholder="Enter Your Name" required ><br>
+            <input class="form-control" style="width: 60%;" type="number" v-model="user.number" placeholder="Enter Your Phone Number" required><br> //javascript v-model and required are the validation for the number.
+            <input style="margin-bottom: 50px;" @click="submitForm(user)" v-if="user.name == '' || user.number == '' " class="btn btn-primary" type="submit" value="Place Order" hidden>
+            <p v-else-if="user.name == parseInt(user.name) " class="bg-danger"> Please input a valid name</p> //javascript validation for name only in name section.
+            <input style="margin-bottom: 50px;" @click="submitForm(user)" v-else class="btn btn-primary" type="submit" value="Place Order"> 
+        </form>
+          </div>
+</div>
+<!--Javascript Vue-->
+      <script>
+        var vm = new Vue ({
+            el: "#app",
+            data:{
+                showProd: true,
+                sitename: 'LESSONS BOOKING',
+                sitename2: 'Shopping Cart',
+                term:'',
+                sort: {
+                    sortingMethod: "price",
+                    sortingOrder: "ascending",
+                },
+                user:{
+                       name: '',
+                       number: '',
+            },
+            lesson: lessonsArray,
+             cart: [],
+            },
+              methods:{
+                  //adding subjects to shopping cart
+                 addToCart: function(lessons) {
+                 this.cart.push(lessons);
+                },
+
+            // Filter through lesson object to archuive search
+             searchLessons: function(){
+            this.lesson = lessonsArray; //lesson array is coming from lessons.js and then it filters the seardch.
+            this.lesson = this.lesson.filter(data => data.title.toLowerCase().includes(this.term) == true || data.location.toLowerCase().includes(this.term));
+             },
+                //delete subject from shopping cart
+                deleteFromCart: function(lessons, cart) {
+                   this.cart.splice(this.cart.indexOf(lessons), 1);
+                },
+                //shopping cart 
+                showCheckout: function(){
+                    console.log(this.showProd);
+                    this.showProd = this.showProd ? false : true;
+                },
+                //once user has ordered the subjects and checked out
+                submitForm(user) {
+                    alert('Hooray '+ user.name + ' ,your order has been successfully submitted');
+                
+                },
+                // to check amount of subject in cart
+                canAddToCart: function(lessons){
+                    return lessons.availablespace > this.cartCount(lessons);
+                },
+
+                cartCount(id) {
+                    let count = 0;
+                    for(let i = 0; i < this.cart.length; i++) {
+                    if (this.cart[i] === id) {
+                    count++;
+                        }
+                    }
+                    return count;
+                },
+ },
+
+            computed: {
+                    cartItemCount: function(lessons){
+                        return this.cart.length || '';
+                    },
+                    //the comparison that shows the order
+                    sortedLessons(lessons, sort){
+                    
+                    //sorting through location by ascending and descending order
+                    if(this.sort.sortingMethod == "location" && this.sort.sortingOrder === "ascending" ){
+                    function compare (a, b){
+                        if (a.location > b.location) return 1;
+                        if (a.location < b.location) return -1;
+                        return 0;
+                    }
+                    
+                }else if(this.sort.sortingMethod == "location" && this.sort.sortingOrder === "descending" ){
+                    function compare (a, b){
+                        if (a.location < b.location) return 1;
+                        if (a.location > b.location) return -1;
+                        return 0;
+                    }
+                    //sorting through price by ascending and descending order
+                }else if(this.sort.sortingMethod === "price" && this.sort.sortingOrder === "ascending" ){
+                    function compare (a, b){
+                        if (a.price > b.price) return 1;
+                        if (a.price < b.price) return -1;
+                        return 0;
+                    }
+                }else if(this.sort.sortingMethod === "price" && this.sort.sortingOrder === "descending" ){
+                    function compare (a, b){
+                        if (a.price < b.price) return 1;
+                        if (a.price > b.price) return -1;
+                        return 0;
+                    }
+                //sorting through title by ascending and descending order
+                }else if(this.sort.sortingMethod == "title" && this.sort.sortingOrder === "ascending" ){
+                    function compare (a, b){
+                        if (a.title > b.title) return 1;
+                        if (a.title < b.title) return -1;
+                        return 0;
+                    }
+                }else if(this.sort.sortingMethod == "title" && this.sort.sortingOrder === "descending" ){
+                    function compare (a, b){
+                        if (a.title < b.title) return 1;
+                        if (a.title > b.title) return -1;
+                        return 0;
+                    }
+                //sorting through Availability by ascending and descending order
+                }else if(this.sort.sortingMethod == "availablespace" && this.sort.sortingOrder === "ascending" ){
+                    function compare (a, b){
+                        if (a.availablespace > b.availablespace) return 1;
+                        if (a.availablespace < b.availablespace) return -1;
+                        return 0;
+                    }
+                }else if(this.sort.sortingMethod == "availablespace" && this.sort.sortingOrder === "descending" ){
+                    function compare (a, b){
+                        if (a.availablespace < b.availablespace) return 1;
+                        if (a.availablespace > b.availablespace) return -1;
+                        return 0;
+                    }
+                }
+                    //sort 'lessonArray' array and return it
+                    return this.lesson.sort(compare);
+
+                },
+             },
+                            
+                        })
+
+    </script>
+</body>
+</html>

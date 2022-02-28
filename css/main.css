@@ -1,0 +1,62 @@
+.nav_view{
+    background-color:#c7cdff;
+}
+.nav_view h3{
+    color:#040042;
+}
+
+input[type=text]:focus {
+    background-color:#a1a2c9;
+    border: 3px solid #9594c1 !important;
+    text-decoration: none !important;
+    outline-width: 0;
+}
+.search_form{
+    color: #10004a ;
+    width: 100%;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    background-color:#f4f7ff;
+    text-align: center;
+    border: 3px solid rgb(19, 0, 128);
+    align-content: center;
+    position: relative ;
+    left: 50%;
+   
+    }
+    aside {
+        width: 40%;
+        height: 40px;
+        padding-left: 40px;
+        padding-bottom: 40px;
+        padding-top: 15px;
+        margin-right: 25px;
+        background-color: #9590eb;
+        display: flex;
+        position: absolute;
+        right: 15%;
+       text-align: center;
+       align-content: center;
+       border-radius: 15px;
+       word-spacing: 10px;
+      }
+      aside1 {
+        width: 40%;
+        height: 40px;
+        padding-left: 40px;
+        padding-bottom: 40px;
+        padding-top: 15px;
+        margin-right: 25px;
+        background-color: #9590eb;
+        display: flex;
+        position: absol;
+        left: 60%;
+       text-align: center;
+       align-content: center;
+       border-radius: 15px;
+       word-spacing: 10px;
+       }
+
+
+  
