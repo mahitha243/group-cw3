@@ -15,6 +15,11 @@
     <!--LESSON DETAILS-->
     <script src="lessons.js" ></script>
     <link rel="manifest" href="afterSchoolapp.webmanifest">
+    <script>
+        if('serviceWorker' in navigator){
+            navigator.serviceWorker.register('service-worker.js')
+        };
+    </script>
 </head>
 <body>
     <!--website name on top the page by linking it to sitename-->
