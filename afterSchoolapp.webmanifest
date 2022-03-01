@@ -16,7 +16,7 @@
 
     ],
 
-    "start_url": "index.html",
+    "start_url": "/index.html",
     "display": "fullscreen",
     "background_color": "#B12A34"
 }
