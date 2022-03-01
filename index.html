@@ -11,7 +11,7 @@
     <script src="https://kit.fontawesome.com/7080cd0a09.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/7080cd0a09.js" crossorigin="anonymous"></script>
     <!---VUE-->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <!--LESSON DETAILS-->
     <script src="lessons.js" ></script>
     <link rel="manifest" href="afterSchoolapp.webmanifest">
@@ -130,9 +130,9 @@
         <br>
         <form>
             <input class="form-control" style="width: 60%;" type="text" v-model="user.name" placeholder="Enter Your Name" required ><br>
-            <input class="form-control" style="width: 60%;" type="number" v-model="user.number" placeholder="Enter Your Phone Number" required><br> //javascript v-model and required are the validation for the number.
+            <input class="form-control" style="width: 60%;" type="number" v-model="user.number" placeholder="Enter Your Phone Number" required><br>      <!--javascript v-model and required are the validation for the number.-->
             <input style="margin-bottom: 50px;" @click="submitForm(user)" v-if="user.name == '' || user.number == '' " class="btn btn-primary" type="submit" value="Place Order" hidden>
-            <p v-else-if="user.name == parseInt(user.name) " class="bg-danger"> Please input a valid name</p> //javascript validation for name only in name section.
+            <p v-else-if="user.name == parseInt(user.name) " class="bg-danger"> Please input a valid name</p>                   <!--javascript validation for name only in name section.-->
             <input style="margin-bottom: 50px;" @click="submitForm(user)" v-else class="btn btn-primary" type="submit" value="Place Order"> 
         </form>
           </div>
@@ -163,7 +163,7 @@
                  this.cart.push(lessons);
                 },
 
-            // Filter through lesson object to archuive search
+            // Filter through lesson object to archive search
              searchLessons: function(){
             this.lesson = lessonsArray; //lesson array is coming from lessons.js and then it filters the seardch.
             this.lesson = this.lesson.filter(data => data.title.toLowerCase().includes(this.term) == true || data.location.toLowerCase().includes(this.term));
